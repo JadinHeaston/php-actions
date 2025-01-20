@@ -1,6 +1,7 @@
 <?php
 
 //Configurable
+define('FAIL_ON_DEPRECATIONS', true);
 define('ENABLE_TERMINAL_COLORS', false);
 define('TERMINAL_COLORS', [
 	'default' => "\033[37m", //white
@@ -66,7 +67,11 @@ foreach ($phpFiles as $phpFilePath)
 {
 	echo 'Linting: ' . $phpFilePath . ' - ';
 	$commandOutput = runCommand('php -l ' . $phpFilePath);
-	if ($commandOutput !== false && $commandOutput['return_value'] === 0)
+	if ($commandOutput === false)
+	{
+		echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['red'] : '') . 'ERROR FAILED TO RUN COMMAND' . (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['default'] : '');
+	}
+	elseif ($commandOutput['return_value'] === 0 && (FAIL_ON_DEPRECATIONS === false || $commandOutput['stderr'] === ''))
 		echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['green'] : '') . 'PASS' . (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['default'] : '');
 	else
 	{
