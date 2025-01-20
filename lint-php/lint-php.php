@@ -62,6 +62,9 @@ foreach ($phpFiles as $phpFilePath)
 	}
 
 	echo PHP_EOL;
+
+	if ($commandOutput['stderr'] !== '')
+		echo $commandOutput['stderr'] . PHP_EOL;
 }
 
 if ($lintFailures === 0)
