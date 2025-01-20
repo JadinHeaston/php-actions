@@ -1,13 +1,33 @@
 #!/bin/sh
 
+# There are two ways to run this:
+## 1. Linting the entire PHP project. (Thorough)
+## 2. Linting only staged PHP files. (Quicker)
+
+RUN_OPTION=2
+
 # Configurable variable for the PHP lint script file path
 LINT_PHP_FILE_PATH="./.git/hooks/scripts/lint-php.php"
 
-# Run the lint-php.php script with PHP
+# 1.
+if [ "$RUN_OPTION" -eq 1 ]; then
+## Lint the directory.
 php "$LINT_PHP_FILE_PATH" --lint-directory="./"
+fi
 
-# Capture the exit code of the PHP script
+# 2.
+if [ "$RUN_OPTION" -eq 2 ]; then
+## Storing staged PHP file list.
+STAGED_PHP_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.php$')
+
+## Lint the files with the provided list.
+php "$LINT_PHP_FILE_PATH" --files="$STAGED_PHP_FILES"
+fi
+
+# Common Ending
+
+## Capture the exit code of the PHP script
 exit_code=$?
 
-# Use the exit code of the PHP script as the exit code for the hook
+## Use the exit code of the PHP script as the exit code for the hook
 exit $exit_code

@@ -12,21 +12,14 @@ define('TERMINAL_COLORS', [
 $options = getopt(
 	'',
 	[
+		'files:', //Newline ('\n') separated list of files that will be linted.
 		'lint-directory:', //Directories to be iterated through and linted.
-		'exclude::' //Exclude paths. Any direct matches will be skipped (including their subdirectories)
+		'exclude::', //Exclude paths. Any direct matches will be skipped (including their subdirectories)
 	]
 );
 
-if (count($options) > 0 === false || isset($options['lint-directory']) === false)
-	exit('No `--lint-directory` provided.');
-elseif ($options['lint-directory'] === false)
-	exit('Invalid `lint-directory` provided. Please provide the root directory path to be linted.');
-
-//Required option
-if (is_string($options['lint-directory']))
-	$lintDirectories = [$options['lint-directory']];
-elseif (is_array($options['lint-directory']))
-	$lintDirectories = $options['lint-directory'];
+if (count($options) > 0 === false || (isset($options['lint-directory']) === false && isset($options['files']) === false))
+	exit('No `--lint-directory` or `--files` provided.');
 
 $excludedPaths = [];
 if (isset($options['exclude']) === true)
@@ -44,7 +37,27 @@ if (isset($options['exclude']) === true)
 }
 
 //Getting PHP files.
-$phpFiles = getPHPFiles($lintDirectories, $excludedPaths);
+if (isset($options['lint-directory']) === true)
+{
+	if (is_string($options['lint-directory']))
+		$lintDirectories = [$options['lint-directory']];
+	elseif (is_array($options['lint-directory']))
+		$lintDirectories = $options['lint-directory'];
+
+	$phpFiles = getPHPFilesDirectory($lintDirectories, $excludedPaths);
+}
+elseif (isset($options['files']) === true)
+{
+	if (is_string($options['files']))
+		$lintDirectories = [$options['files']];
+	elseif (is_array($options['files']))
+		$lintDirectories = $options['files'];
+
+	$phpFiles = explode("\n", $options['files']);
+}
+
+//Removing excluded PHP files and sorting the array.
+$phpFiles = array_diff($phpFiles, $excludedPaths);
 sort($phpFiles);
 
 //Linting PHP Files
@@ -78,11 +91,8 @@ else
 	exit(1);
 }
 
-
-
-
 //Functions
-function getPHPFiles(array $directoryPath, array &$excludedPaths = []): array
+function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []): array
 {
 	$PHPFilePaths = [];
 
@@ -103,13 +113,11 @@ function getPHPFiles(array $directoryPath, array &$excludedPaths = []): array
 
 		//Remove excluded directory paths.
 		$innerDirectories = array_diff($innerDirectories, $excludedPaths);
-		//Remove excluded PHP paths.
-		$phpFiles = array_diff($phpFiles, $excludedPaths);
 
 		//Call this function on each remaining inner directory to recursively check deeper.
 		foreach ($innerDirectories as $innerDirectory)
 		{
-			array_push($PHPFilePaths, ...getPHPFiles([$innerDirectory], $excludedPaths));
+			array_push($PHPFilePaths, ...getPHPFilesDirectory([$innerDirectory], $excludedPaths));
 		}
 
 		//Adding this directories PHP files.
