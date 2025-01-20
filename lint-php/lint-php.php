@@ -52,7 +52,7 @@ $lintFailures = 0;
 foreach ($phpFiles as $phpFilePath)
 {
 	echo 'Linting: ' . $phpFilePath . ' - ';
-	$commandOutput = runCommand('php -w ' . $phpFilePath . ' | php -l');
+	$commandOutput = runCommand('php -l ' . $phpFilePath);
 	if ($commandOutput !== false && $commandOutput['return_value'] === 0)
 		echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['green'] : '') . 'PASS' . (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['default'] : '');
 	else
