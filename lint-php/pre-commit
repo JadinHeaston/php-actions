@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# Configurable variable for the PHP lint script file path
+LINT_PHP_FILE_PATH="lint-php.php"
+
+# Run the lint-php.php script with PHP
+php "$LINT_PHP_FILE_PATH"
+
+# Capture the exit code of the PHP script
+exit_code=$?
+
+# Use the exit code of the PHP script as the exit code for the hook
+exit $exit_code
