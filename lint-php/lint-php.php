@@ -1,6 +1,7 @@
 <?php
 
 //Configurable
+define('ENABLE_TERMINAL_COLORS', false);
 define('TERMINAL_COLORS', [
 	'default' => "\033[37m", //white
 	'red' => "\033[31m",
@@ -53,10 +54,10 @@ foreach ($phpFiles as $phpFilePath)
 	echo 'Linting: ' . $phpFilePath . ' - ';
 	$commandOutput = runCommand('php -w ' . $phpFilePath . ' | php -l');
 	if ($commandOutput !== false && $commandOutput['return_value'] === 0)
-		echo TERMINAL_COLORS['green'] . 'PASS' . TERMINAL_COLORS['default'];
+		echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['green'] : '') . 'PASS' . (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['default'] : '');
 	else
 	{
-		echo TERMINAL_COLORS['red'] . 'FAIL' . TERMINAL_COLORS['default'];
+		echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['red'] : '') . 'FAIL' . (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['default'] : '');
 		++$lintFailures;
 	}
 
@@ -65,12 +66,12 @@ foreach ($phpFiles as $phpFilePath)
 
 if ($lintFailures === 0)
 {
-	echo TERMINAL_COLORS['green'] . 'SUCCESS: No linting errors present. (' . $lintFailures . ')', PHP_EOL;
+	echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['green'] : '') . 'SUCCESS: No linting errors present. (' . $lintFailures . ')', PHP_EOL;
 	exit(0);
 }
 else
 {
-	echo TERMINAL_COLORS['red'] . 'FAILURE: linting errors present. (' . $lintFailures . ')', PHP_EOL;
+	echo (ENABLE_TERMINAL_COLORS === true ? TERMINAL_COLORS['red'] : '') . 'FAILURE: linting errors present. (' . $lintFailures . ')', PHP_EOL;
 	exit(1);
 }
 
@@ -78,7 +79,6 @@ else
 
 
 //Functions
-
 function getPHPFiles(array $directoryPath, array &$excludedPaths = []): array
 {
 	$PHPFilePaths = [];
