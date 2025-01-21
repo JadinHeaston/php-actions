@@ -60,8 +60,6 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 
 		//Remove excluded directory paths.
 		$innerDirectories = array_diff($innerDirectories, $excludedPaths);
-		//Remove excluded PHP paths.
-		$phpFiles = array_diff($phpFiles, $excludedPaths);
 
 		//Call this function on each remaining inner directory to recursively check deeper.
 		foreach ($innerDirectories as $innerDirectory)
@@ -73,5 +71,7 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 		array_push($PHPFilePaths, ...$phpFiles);
 	}
 
+	//Remove excluded PHP paths.
+	$PHPFilePaths = array_diff($PHPFilePaths, $excludedPaths);
 	return $PHPFilePaths;
 }

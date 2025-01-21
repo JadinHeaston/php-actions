@@ -57,8 +57,7 @@ elseif (isset($options['files']) === true)
 	$phpFiles = explode("\n", $options['files']);
 }
 
-//Removing excluded PHP files and sorting the array.
-$phpFiles = array_diff($phpFiles, $excludedPaths);
+//Sorting the array.
 sort($phpFiles);
 
 //Linting PHP Files
@@ -129,6 +128,8 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 		array_push($PHPFilePaths, ...$phpFiles);
 	}
 
+	//Remove excluded PHP paths.
+	$PHPFilePaths = array_diff($PHPFilePaths, $excludedPaths);
 	return $PHPFilePaths;
 }
 
