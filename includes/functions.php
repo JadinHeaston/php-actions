@@ -39,7 +39,7 @@ function runCommand(string $command): array | false
 		return false;
 }
 
-function getPHPFiles(array $directoryPath, array &$excludedPaths = []): array
+function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []): array
 {
 	$PHPFilePaths = [];
 
@@ -66,7 +66,7 @@ function getPHPFiles(array $directoryPath, array &$excludedPaths = []): array
 		//Call this function on each remaining inner directory to recursively check deeper.
 		foreach ($innerDirectories as $innerDirectory)
 		{
-			array_push($PHPFilePaths, ...getPHPFiles([$innerDirectory], $excludedPaths));
+			array_push($PHPFilePaths, ...getPHPFilesDirectory([$innerDirectory], $excludedPaths));
 		}
 
 		//Adding this directories PHP files.
