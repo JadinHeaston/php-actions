@@ -10,6 +10,8 @@ RUN_OPTION=${1:-$default_value}
 # Configurable variable for the PHP lint script file path
 LINT_PHP_FILE_PATH="./.workflows/lint-php/lint-php.php"
 
+ls -lah ./
+
 # 1.
 if [ "$RUN_OPTION" -eq 1 ]; then
 ## Lint the directory.
