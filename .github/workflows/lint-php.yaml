@@ -1,0 +1,23 @@
+name: PHP Linting
+
+on:
+  push:
+    branches: [ "main" ] # Specify the branches where the workflow should run
+  pull_request:
+    branches: [ "main" ] # Specify the branches where the workflow should run
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v3
+        with:
+          php-version: '8.4' #Specify the desired PHP version
+
+      - name: Run pre-commit hook
+        run: sh ./.workflows/lint-php/

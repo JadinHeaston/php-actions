@@ -7,7 +7,7 @@
 RUN_OPTION=2
 
 # Configurable variable for the PHP lint script file path
-LINT_PHP_FILE_PATH="./.git/hooks/scripts/lint-php.php"
+LINT_PHP_FILE_PATH="./.workflows/lint-php/lint-php.php"
 
 # 1.
 if [ "$RUN_OPTION" -eq 1 ]; then
