@@ -60,8 +60,6 @@ elseif (isset($options['files']) === true)
 //Sorting the array.
 sort($phpFiles);
 
-var_dump($phpFiles);
-
 //Linting PHP Files
 $lintFailures = 0;
 foreach ($phpFiles as $phpFilePath)
@@ -111,6 +109,8 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 		$innerDirectories = glob($directoryPath . DIRECTORY_SEPARATOR . '*', GLOB_NOSORT | GLOB_ONLYDIR);
 		//Get the PHP files in this directory.
 		$phpFiles = glob($directoryPath . DIRECTORY_SEPARATOR . '*.php', GLOB_NOSORT);
+
+		var_dump($directoryPath, $innerDirectories, $phpFiles);
 
 		if ($innerDirectories === false)
 			exit('Failed to find directories within: ' . $directory);
