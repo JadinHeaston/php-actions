@@ -20,4 +20,4 @@ jobs:
           php-version: '8.4' #Specify the desired PHP version
 
       - name: Lint PHP Files
-        run: sh ./.workflows/lint-php/pre-commit
+        run: sh ./.workflows/lint-php/pre-commit 1
