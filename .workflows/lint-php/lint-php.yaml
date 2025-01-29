@@ -1,10 +1,12 @@
-name: PHP Linting
+name: PHP Lint
 
 on:
   push:
-    branches: [ "main", "action-test" ] # Specify the branches where the workflow should run
+    branches:
+      - '**'
   pull_request:
-    branches: [ "main", "action-test" ] # Specify the branches where the workflow should run
+    branches:
+      - '**'
 
 jobs:
   lint:
