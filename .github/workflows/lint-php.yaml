@@ -1,10 +1,12 @@
-name: PHP Linting
+name: PHP Lint
 
 on:
   push:
-    branches: [ "main" ] # Specify the branches where the workflow should run
+    branches:
+      - '**'
   pull_request:
-    branches: [ "main" ] # Specify the branches where the workflow should run
+    branches:
+      - '**'
 
 jobs:
   lint:
@@ -20,4 +22,4 @@ jobs:
           php-version: '8.4' #Specify the desired PHP version
 
       - name: Run pre-commit hook
-        run: sh ./.workflows/lint-php/
+        run: sh ./.workflows/lint-php/pre-commit
