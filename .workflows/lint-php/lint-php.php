@@ -106,7 +106,7 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 		$directoryPath = realpath($directory);
 
 		//Get directories within the directories.
-		$innerDirectories = glob($directoryPath . DIRECTORY_SEPARATOR . '*', GLOB_NOSORT | GLOB_ONLYDIR);
+		$innerDirectories = glob($directoryPath . DIRECTORY_SEPARATOR . '{.*,*}', GLOB_NOSORT | GLOB_ONLYDIR | GLOB_BRACE);
 		//Get the PHP files in this directory.
 		$phpFiles = glob($directoryPath . DIRECTORY_SEPARATOR . '*.php', GLOB_NOSORT);
 
@@ -121,6 +121,10 @@ function getPHPFilesDirectory(array $directoryPath, array &$excludedPaths = []):
 		//Call this function on each remaining inner directory to recursively check deeper.
 		foreach ($innerDirectories as $innerDirectory)
 		{
+			//Infinite loop prevention.
+			if (in_array(basename($innerDirectory), ['.', '..']))
+				continue;
+
 			array_push($PHPFilePaths, ...getPHPFilesDirectory([$innerDirectory], $excludedPaths));
 		}
 
