@@ -1,8 +1,9 @@
 #!/bin/sh
 
 # There are two ways to run this:
-## 1. Linting the entire PHP project. (Thorough)
-## 2. Linting only staged PHP files. (Quicker)
+## 1. Linting the entire PHP project. (Thorough, used for actions)
+## 2. Linting only staged PHP files. (Quicker, used for the pre-commit hook)
+## Passing a `1` or `2` as an argument will toggle it.
 
 default_value=2
 RUN_OPTION=${1:-$default_value}
