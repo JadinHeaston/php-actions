@@ -60,6 +60,8 @@ elseif (isset($options['files']) === true)
 //Sorting the array.
 sort($phpFiles);
 
+var_dump($phpFiles);
+
 //Linting PHP Files
 $lintFailures = 0;
 foreach ($phpFiles as $phpFilePath)
