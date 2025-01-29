@@ -2,11 +2,9 @@ name: PHP Lint
 
 on:
   push:
-    branches:
-      - '**'
+    branches: [ "main", "action-test" ] # Specify the branches where the workflow should run
   pull_request:
-    branches:
-      - '**'
+    branches: [ "main", "action-test" ] # Specify the branches where the workflow should run
 
 jobs:
   lint:
@@ -17,7 +15,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Setup PHP
-        uses: shivammathur/setup-php@v3
+        uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4' #Specify the desired PHP version
 
